@@ -96,7 +96,8 @@ class InvoiceController extends Controller
     public function generateInvoice($id)
     {
         $invoice = Invoice::with(['customer', 'detail', 'detail.product'])->find($id);
+        $filename = $invoice->id;
         $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
-        return $pdf->stream();
+        return $pdf->download($filename.'-invoice.pdf');
     }
 }
